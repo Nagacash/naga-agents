@@ -131,6 +131,22 @@ const PromptDisplay: React.FC<{ agent: Agent }> = ({ agent }) => {
   );
 };
 
+const renderTextWithLinks = (text: string) => {
+  const urlRegex = /(https?:\/\/\S+)/g;
+  const parts = text.split(urlRegex);
+
+  return parts.map((part, index) => {
+    if (part.match(urlRegex)) {
+      return (
+        <a key={index} href={part} target="_blank" rel="noopener noreferrer" className="text-brand-secondary hover:underline">
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
+};
+
 export const AgentCard: React.FC<AgentCardProps> = ({ agent, onEdit, onDelete, onToggleStatus }) => {
   const ProviderIcon = PROVIDER_ICONS[agent.provider] || ChipIcon;
   const TypeIcon = TYPE_ICONS[agent.type] || ChipIcon;
@@ -189,21 +205,27 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onEdit, onDelete, o
               ) : (
                 <>
                   {agent.output && (
-                    <pre className="text-dark-text-secondary whitespace-pre-wrap break-words font-sans p-4">{agent.output}</pre>
+                    <pre className="text-dark-text-secondary whitespace-pre-wrap break-words font-sans p-4 leading-relaxed">
+                        {renderTextWithLinks(agent.output)}
+                    </pre>
                   )}
-                  {agent.sources && agent.sources.length > 0 && (
-                      <div className="p-3 border-t border-dark-border">
+                  {agent.webSearch && ( // Show sources section if web search was enabled
+                      <div className="pt-4 border-t border-dark-border">
                           <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Sources</h4>
-                          <ul className="space-y-2">
-                              {agent.sources.map((source, index) => (
-                                  <li key={index} className="truncate">
-                                      <a href={source.uri} target="_blank" rel="noopener noreferrer" className="text-brand-secondary hover:underline flex items-center space-x-2">
-                                          <LinkIcon className="w-4 h-4 flex-shrink-0" />
-                                          <span className="truncate" title={source.title || source.uri}>{source.title || source.uri}</span>
-                                      </a>
-                                  </li>
-                              ))}
-                          </ul>
+                          {agent.sources && agent.sources.length > 0 ? (
+                              <ul className="space-y-2">
+                                  {agent.sources.map((source, index) => (
+                                      <li key={index} className="truncate">
+                                          <a href={source.uri} target="_blank" rel="noopener noreferrer" className="text-brand-secondary hover:underline flex items-center space-x-2">
+                                              <LinkIcon className="w-4 h-4 flex-shrink-0" />
+                                              <span className="truncate" title={source.title || source.uri}>{source.title || source.uri}</span>
+                                          </a>
+                                      </li>
+                                  ))}
+                              </ul>
+                          ) : (
+                              <p className="text-sm text-dark-text-secondary">No sources found for this output.</p>
+                          )}
                       </div>
                   )}
                 </>
