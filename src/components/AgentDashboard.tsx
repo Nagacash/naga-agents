@@ -93,11 +93,10 @@ export const AgentDashboard: React.FC<AgentDashboardProps> = ({ apiKeys, onConfi
                   const model = ai.getGenerativeModel({ model: agent.model });
 
                   const contents: Content[] = [
-                    { role: 'system', parts: [{ text: mcp.system_prompt }] },
                     { role: 'user', parts: [{ text: mcp.user_prompt }] }
                   ];
 
-                  const generationConfig: GenerationConfig = {};
+                  const generationConfig: GenerationConfig = { systemInstruction: mcp.system_prompt };
 
                   const request: {
                       contents: Content[];
