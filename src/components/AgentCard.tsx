@@ -132,7 +132,7 @@ const PromptDisplay: React.FC<{ agent: Agent }> = ({ agent }) => {
 };
 
 const renderTextWithLinks = (text: string) => {
-  const urlRegex = /(https?:\/\/\S+)/g;
+  const urlRegex = /(https?:\/\/\S+?)(?<!\))/g;
   const parts = text.split(urlRegex);
 
   return parts.map((part, index) => {
