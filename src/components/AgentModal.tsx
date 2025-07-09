@@ -230,14 +230,13 @@ export const AgentModal: React.FC<AgentModalProps> = ({ isOpen, onClose, onSave,
                 <div className="mt-4">
                     <label htmlFor="schedule-type" className="block text-sm font-medium text-dark-text">Frequency</label>
                     <select id="schedule-type" value={schedule} onChange={e => setSchedule(e.target.value as Schedule)} className="mt-1 w-full bg-dark-input border-dark-border rounded-lg p-3">
-                        {Object.values(Schedule).map(s => <option key={s} value={s}>{s}</option>)}
+                        {Object.values(Schedule).map(s => (<option key={s} value={s}>{s}</option>))}
                     </select>
                 </div>
                 <div className="mt-4">
                     {renderScheduleInputs()}
                 </div>
             </div>
-
             {type === AgentType.IMAGE && (
                 <div>
                     <label htmlFor="output-quality" className="block text-sm font-medium text-dark-text">Output Quality</label>

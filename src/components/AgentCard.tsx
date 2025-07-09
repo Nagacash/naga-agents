@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Agent, AgentStatus, AIProvider, AgentType, Schedule } from '../types';
 import { PlayIcon, PauseIcon, EditIcon, Trash2Icon, WrenchIcon, GoogleIcon, OpenAIIcon, AnthropicIcon, GrokIcon, ChipIcon, ImageIcon, VideoIcon, ZapIcon, GlobeIcon, LinkIcon, ClockIcon } from './icons';
 import { formatSchedule } from '../utils/scheduler';
+import { renderTextWithLinks } from '../utils/textUtils';
+import { OutputModal } from './OutputModal'; // Import OutputModal
 
 interface AgentCardProps {
   agent: Agent;
@@ -131,28 +133,16 @@ const PromptDisplay: React.FC<{ agent: Agent }> = ({ agent }) => {
   );
 };
 
-const renderTextWithLinks = (text: string) => {
-  const urlRegex = /(https?:\/\/\S+?)(?<!\))/g;
-  const parts = text.split(urlRegex);
 
-  return parts.map((part, index) => {
-    if (part.match(urlRegex)) {
-      return (
-        <a key={index} href={part} target="_blank" rel="noopener noreferrer" className="text-brand-secondary hover:underline">
-          {part}
-        </a>
-      );
-    }
-    return part;
-  });
-};
 
 export const AgentCard: React.FC<AgentCardProps> = ({ agent, onEdit, onDelete, onToggleStatus }) => {
+  const [isOutputModalOpen, setIsOutputModalOpen] = useState(false); // State for modal
+
   const ProviderIcon = PROVIDER_ICONS[agent.provider] || ChipIcon;
   const TypeIcon = TYPE_ICONS[agent.type] || ChipIcon;
   
   return (
-    <div className="bg-dark-card rounded-xl border border-dark-border shadow-lg flex flex-col h-full overflow-hidden transition-all duration-300 hover:border-brand-secondary hover:shadow-2xl">
+    <div className="bg-dark-card rounded-xl border border-dark-border shadow-lg flex flex-col h-full overflow-hidden transition-all duration-300 hover:border-brand-primary hover:shadow-2xl">
       <div className="p-6 flex-grow flex flex-col">
         <div className="flex justify-between items-start">
           <h3 className="text-xl font-bold text-white pr-4">{agent.name}</h3>
@@ -197,7 +187,10 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onEdit, onDelete, o
         {(agent.output || agent.error || (agent.sources && agent.sources.length > 0)) && (
           <div className="mt-4 flex-grow flex flex-col min-h-0">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Last Run Output</p>
-            <div className="bg-dark-bg/50 rounded-lg border border-dark-border overflow-y-auto text-sm flex-grow max-h-64">
+            <div 
+              className="bg-dark-bg/50 rounded-lg border border-dark-border overflow-y-auto text-sm flex-grow max-h-64 cursor-pointer hover:border-brand-primary transition-colors duration-200"
+              onClick={() => setIsOutputModalOpen(true)}
+            >
               {agent.error ? (
                 <pre className="text-red-400 whitespace-pre-wrap break-words font-sans p-3">{agent.error}</pre>
               ) : agent.type === AgentType.IMAGE && agent.output ? (
@@ -214,7 +207,9 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onEdit, onDelete, o
                           <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Sources</h4>
                           {agent.sources && agent.sources.length > 0 ? (
                               <ul className="space-y-2">
-                                  {agent.sources.map((source, index) => (
+                                  {agent.sources
+                                      .filter(Boolean)
+                                      .map((source, index) => (
                                       <li key={index} className="truncate">
                                           <a href={source.uri} target="_blank" rel="noopener noreferrer" className="text-brand-secondary hover:underline flex items-center space-x-2">
                                               <LinkIcon className="w-4 h-4 flex-shrink-0" />
@@ -232,6 +227,16 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onEdit, onDelete, o
               )}
             </div>
           </div>
+        )}
+
+        {isOutputModalOpen && (
+          <OutputModal
+            isOpen={isOutputModalOpen}
+            onClose={() => setIsOutputModalOpen(false)}
+            output={agent.output}
+            error={agent.error}
+            sources={agent.sources}
+          />
         )}
       </div>
       <div className="bg-dark-card/50 border-t border-dark-border p-4 flex justify-between items-center mt-auto">

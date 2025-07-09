@@ -2,9 +2,10 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Agent, AgentStatus, AgentType, OutputQuality, Source, Schedule } from '../types';
 import { DUMMY_AGENTS } from '../constants';
-import { AgentCard } from './AgentCard';
+
 import { AgentModal } from './AgentModal';
 import { PlusCircleIcon } from './icons';
+import { AgentCard } from './AgentCard';
 import { GoogleGenerativeAI, GenerateContentResult, GenerationConfig, Part, Content } from '@google/generative-ai';
 
 import { ApiKeys } from '../App';
