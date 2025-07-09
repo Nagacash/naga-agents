@@ -1,11 +1,17 @@
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import { GearIcon } from './icons';
 
 interface HeaderProps {
     onSettingsClick: () => void;
     onNavigate: () => void;
 }
+
+const textPulseVariants = {
+  initial: { color: '#F3F4F6' }, // dark-text
+  animate: { color: '#FF8C00' }  // Orange
+};
 
 export const Header: React.FC<HeaderProps> = ({ onSettingsClick, onNavigate }) => {
     return (
@@ -15,7 +21,20 @@ export const Header: React.FC<HeaderProps> = ({ onSettingsClick, onNavigate }) =
                     <div className="flex items-center">
                         <button onClick={onNavigate} className="flex-shrink-0 flex items-center space-x-2 bg-transparent border-none cursor-pointer p-0">
                             {/* <img src="/images/logo.png" alt="Logo" className="h-8 w-8" /> */}
-                            <span className="text-2xl font-bold text-white">Naga Codex</span>
+                            <motion.span
+                                className="text-2xl font-bold text-white"
+                                variants={textPulseVariants}
+                                initial="initial"
+                                animate="animate"
+                                transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    repeatType: "reverse",
+                                    ease: "easeInOut"
+                                }}
+                            >
+                                Naga Codex
+                            </motion.span>
                         </button>
                     </div>
                     <div className="flex items-center">

@@ -26,17 +26,36 @@ export const Features: React.FC = () => {
     visible: { opacity: 1, y: 0 }
   };
 
+  const textVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
     <div className="py-12 sm:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="lg:text-center">
           <h2 className="text-base text-brand-primary font-semibold tracking-wide uppercase">Features</h2>
-          <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
+          <motion.p
+            className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl"
+            variants={textVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             A Better Way to Automate Work
-          </p>
-          <p className="mt-4 max-w-2xl text-xl text-dark-text-secondary lg:mx-auto">
+          </motion.p>
+          <motion.p
+            className="mt-4 max-w-2xl text-xl text-dark-text-secondary lg:mx-auto"
+            variants={textVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
             Naga Codex Agents provides the tools you need to build a powerful, automated team that works for you 24/7.
-          </p>
+          </motion.p>
         </div>
 
         <div className="mt-12">

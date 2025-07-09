@@ -270,7 +270,8 @@ export const AgentDashboard: React.FC<AgentDashboardProps> = ({ apiKeys, onConfi
             key={agent.id}
             variants={cardVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
           >
             <AgentCard
