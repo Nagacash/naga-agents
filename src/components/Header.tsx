@@ -27,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({ onSettingsClick, onNavigate }) =
                                 initial="initial"
                                 animate="animate"
                                 transition={{
-                                    duration: 2,
+                                    duration: 4,
                                     repeat: Infinity,
                                     repeatType: "reverse",
                                     ease: "easeInOut"
