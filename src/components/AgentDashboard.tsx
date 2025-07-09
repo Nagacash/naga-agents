@@ -96,15 +96,17 @@ export const AgentDashboard: React.FC<AgentDashboardProps> = ({ apiKeys, onConfi
                     { role: 'user', parts: [{ text: mcp.user_prompt }] }
                   ];
 
-                  const generationConfig: GenerationConfig = { systemInstruction: mcp.system_prompt };
+                  const generationConfig: GenerationConfig = {};
 
                   const request: {
                       contents: Content[];
                       generationConfig?: GenerationConfig;
                       tools?: any[];
+                      systemInstruction?: string; // Add systemInstruction to the request type
                   } = {
                     contents: contents,
-                    generationConfig: generationConfig
+                    generationConfig: generationConfig,
+                    systemInstruction: mcp.system_prompt // Move systemInstruction here
                   };
 
                   if (agent.webSearch) {
