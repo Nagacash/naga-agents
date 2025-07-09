@@ -189,7 +189,7 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onEdit, onDelete, o
               ) : (
                 <>
                   {agent.output && (
-                    <pre className="text-dark-text-secondary whitespace-pre-wrap break-words font-sans p-3">{agent.output}</pre>
+                    <pre className="text-dark-text-secondary whitespace-pre-wrap break-words font-sans p-4">{agent.output}</pre>
                   )}
                   {agent.sources && agent.sources.length > 0 && (
                       <div className="p-3 border-t border-dark-border">
